@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Matches the page background in style.css, so the window behind the
+         WebView is the same colour as the page and there is no flash of a
+         different shade on launch. (This was still FX Pulse's dark blue until
+         the app went light; it never matched the page even before that.) -->
+    <color name="app_bg">#FFFFFFFF</color>
+    <color name="ic_launcher_background">#141b2a</color>
+</resources>

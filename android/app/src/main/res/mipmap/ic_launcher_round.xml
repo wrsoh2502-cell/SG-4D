@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Legacy (pre-O) launcher icon: the adaptive foreground on its own background. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#141b2a"
+        android:pathData="M0,0h108v108H0z" />
+    <group
+        android:translateX="54"
+        android:translateY="54"
+        android:scaleX="0.62"
+        android:scaleY="0.62">
+
+        <path android:fillColor="#22c55e" android:pathData="M-27.5,-2 h3 v24 h-3 z" />
+        <path android:fillColor="#22c55e" android:pathData="M-31,6 h10 v10 h-10 z" />
+
+        <path android:fillColor="#ef4444" android:pathData="M-10.5,-4 h3 v20 h-3 z" />
+        <path android:fillColor="#ef4444" android:pathData="M-14,-2 h10 v8 h-10 z" />
+
+        <path android:fillColor="#22c55e" android:pathData="M6.5,-18 h3 v30 h-3 z" />
+        <path android:fillColor="#22c55e" android:pathData="M3,-12 h10 v20 h-10 z" />
+
+        <path android:fillColor="#22c55e" android:pathData="M23.5,-30 h3 v28 h-3 z" />
+        <path android:fillColor="#22c55e" android:pathData="M20,-24 h10 v16 h-10 z" />
+
+        <path
+            android:strokeColor="#60a5fa"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M-38,20 L-26,6 L-9,2 L8,-12 L25,-24 L38,-30" />
+    </group>
+</vector>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RELEASE AdMob ids. This file overrides the ids in main/ for the release
+  build ONLY (debug always keeps the test ids in main/res/values/ads.xml).
+
+  RIGHT NOW these are still Google's TEST ids on purpose, so this build earns
+  nothing and is safe to install and tap. Valid ids are required here either
+  way: the AdMob SDK validates the App ID at process start and a bogus value
+  crashes the app on launch.
+
+  TO GO LIVE for SG 4D:
+    1. Register the app at https://apps.admob.com under the package name
+       com.bernard.sg4d, then create a banner, an interstitial and a rewarded unit.
+    2. Replace ALL FOUR ids below with your own:
+         - app_id          : App settings > App ID       (uses '~')
+         - banner_id       : Ad units > banner unit      (uses '/')
+         - interstitial_id : Ad units > interstitial     (uses '/')
+         - rewarded_id     : Ad units > rewarded         (uses '/')
+    3. In the Play Console, declare that the app contains ads and declare the
+       advertising ID. Ship a privacy policy URL. Both are mandatory.
+
+  Never tap your own live ads; only this signed release build carries them.
+-->
+<resources>
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_interstitial_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_rewarded_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DEFAULT / DEBUG AdMob ids - Google's OFFICIAL TEST ids. They always fill,
+  earn nothing, and are safe to tap. These apply to DEBUG builds (and any
+  build type that doesn't override them).
+
+  Real, revenue-earning ids live in src/release/res/values/ads.xml and apply
+  ONLY to the release build. This split is deliberate: it guarantees a debug
+  APK can never serve live ads, which is what gets AdMob accounts suspended.
+
+  Rule: never tap your own live ads; only the signed release build carries them.
+-->
+<resources>
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_interstitial_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_rewarded_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+    <!-- Empty on purpose: only src/debug/ sets it, so no release build can force the EEA form. -->
+    <string name="admob_test_device_hash" translatable="false"></string>
+</resources>

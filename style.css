@@ -1,0 +1,305 @@
+/* SG 4D — light, warm, sized for a phone held one-handed.
+ *
+ * White page, faintly warm cards. The cards are a shade *off* white rather than
+ * the page being a shade off white, so the background stays literally #fff and
+ * panels still read as panels without needing a drop shadow on every box.
+ *
+ * The gold had to change, not just invert. #e8b04b was legible on a near-black
+ * page and is close to unreadable on white (about 1.9:1), so the accent is now
+ * a deep gold that carries text at 4.8:1, and anything filled with it takes
+ * white text. The pale gold lives on separately as --accent-dim, for tinted
+ * fills like the highlighted stats cell where dark text sits on top.
+ */
+
+:root {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --panel: #fbf9f5;
+  --panel-2: #f2ede5;
+  --line: #e5dfd4;
+  --text: #1a1611;
+  --muted: #6f6656;
+
+  --accent: #9a6700;        /* deep gold — safe as text on white, and as a fill */
+  --accent-dim: #f3dda6;    /* pale gold — a fill that dark text sits on */
+  --on-accent: #ffffff;
+
+  --hit: #15803d;
+  --hit-soft: #f1faf4;
+  --hit-line: #bce3c9;
+  /* Secondary, but still a control you have to be able to see and hit: the
+   * delete ✕ and the input placeholder both use it. A paler grey read fine on
+   * the dark theme and fell to 2.6:1 on white, under the 3:1 floor for UI. */
+  --miss: #8a8071;
+  --warn: #c2410c;
+  --danger: #dc2626;
+
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(26, 22, 17, .06);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overscroll-behavior-y: contain;
+}
+
+/* ---------------- header ---------------- */
+
+#topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand-mark { font-size: 22px; }
+.brand-name { font-weight: 700; letter-spacing: .2px; }
+.status { font-size: 11px; color: var(--muted); }
+.status.stale { color: var(--warn); }
+.status.live { color: var(--hit); }
+
+.iconbtn {
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+  width: 38px; height: 38px; border-radius: 10px; font-size: 17px;
+  font-family: inherit; cursor: pointer; flex: 0 0 auto;
+}
+.iconbtn.spin { animation: spin 900ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------------- views ---------------- */
+
+#views { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.view { display: none; padding: 14px 14px 28px; }
+.view.active { display: block; }
+.hidden { display: none !important; }
+
+#app { display: flex; flex-direction: column; height: 100%; padding-top: env(safe-area-inset-top); }
+
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px; margin: 18px 0 8px;
+}
+.section-head h2 { font-size: 15px; margin: 0; letter-spacing: .2px; }
+h3 { font-size: 14px; margin: 0 0 6px; }
+.muted-sm { font-size: 11.5px; color: var(--muted); }
+.fineprint { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 16px 0 0; }
+.hint { font-size: 11.5px; color: var(--muted); margin: 6px 0 0; }
+
+.notice {
+  background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 10px; padding: 9px 11px; font-size: 12px; color: var(--muted); margin: 12px 0;
+}
+
+.card {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 13px; margin-bottom: 12px;
+}
+.card p { margin: 0 0 8px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.card p:last-child { margin-bottom: 0; }
+.warn-card { border-left: 3px solid var(--warn); }
+
+/* ---------------- chips & controls ---------------- */
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.chip {
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--muted);
+  border-radius: 999px; padding: 7px 14px; font-size: 12.5px;
+  font-family: inherit; cursor: pointer;
+}
+.chip.selected { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.chip-label { font-size: 11.5px; color: var(--muted); }
+
+.btn {
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+  border-radius: 10px; padding: 10px 14px; font-size: 13.5px;
+  font-family: inherit; cursor: pointer;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
+.btn.big { width: 100%; padding: 13px; font-size: 15px; margin-top: 12px; }
+.btn-row { display: flex; gap: 8px; margin-top: 10px; }
+.btn-row.tight { margin-top: 6px; }
+.btn-row .btn { flex: 1; }
+.btn-row.tight .input { flex: 1; }
+
+.input, .select {
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+  border-radius: 10px; padding: 10px 12px; font-size: 14px;
+  font-family: inherit; width: 100%;
+}
+.input::placeholder { color: var(--miss); }
+.input.big-num {
+  font-size: 30px; letter-spacing: 8px; text-align: center;
+  font-variant-numeric: tabular-nums; padding: 12px;
+}
+.field { margin-bottom: 14px; }
+.field > label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.field.two-up { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+
+.draw-picker { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.draw-picker .select { flex: 1; }
+
+/* ---------------- next draw ---------------- */
+
+.nextdraw {
+  background: linear-gradient(135deg, #fdf4e2, #fbf9f5);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 10px 13px; font-size: 12.5px; color: var(--muted); margin-bottom: 12px;
+}
+.nextdraw b { color: var(--accent); font-weight: 600; }
+
+/* ---------------- result card ---------------- */
+
+.result {
+  background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 6px;
+}
+.result-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 1px solid var(--line); padding-bottom: 9px; margin-bottom: 12px;
+}
+.result-date { font-weight: 700; font-size: 15px; }
+.result-draw { font-size: 11.5px; color: var(--muted); }
+
+.top3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.prize { text-align: center; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 9px 4px; }
+.prize .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.prize .num {
+  font-size: 24px; font-weight: 700; letter-spacing: 2px;
+  font-variant-numeric: tabular-nums; margin-top: 3px; color: var(--accent);
+}
+.prize.second .num, .prize.third .num { color: var(--text); font-size: 21px; }
+
+.numblock { margin-bottom: 12px; }
+.numblock:last-child { margin-bottom: 0; }
+.numblock .label {
+  font-size: 10.5px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: .5px; margin-bottom: 6px;
+}
+.numgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.numgrid span {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+  padding: 7px 0; text-align: center; font-size: 14px;
+  font-variant-numeric: tabular-nums; letter-spacing: 1px;
+}
+
+/* ---------------- recent list ---------------- */
+
+.recent-list { display: flex; flex-direction: column; gap: 7px; }
+.recent {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 11px; padding: 10px 12px; cursor: pointer;
+}
+.recent .when { font-size: 12px; color: var(--muted); flex: 0 0 auto; }
+.recent .what {
+  font-size: 15px; font-weight: 600; letter-spacing: 1px;
+  font-variant-numeric: tabular-nums; text-align: right;
+}
+
+/* ---------------- check ---------------- */
+
+.entrynote {
+  font-size: 11.5px; color: var(--muted); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px;
+  margin-top: 4px; line-height: 1.5;
+}
+.entrynote:empty { display: none; }
+
+.checkout { margin-top: 14px; }
+.checkout:empty { display: none; }
+
+.win-summary {
+  border-radius: var(--radius); padding: 13px; margin-bottom: 12px;
+  border: 1px solid var(--line); background: var(--panel);
+}
+.win-summary.won { border-color: var(--hit-line); background: var(--hit-soft); }
+.win-summary .headline { font-size: 17px; font-weight: 700; }
+.win-summary.won .headline { color: var(--hit); }
+.win-summary .sub { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+
+.hitrow {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 11px; padding: 10px 12px; margin-bottom: 7px;
+}
+.hitrow .top { display: flex; justify-content: space-between; align-items: baseline; }
+.hitrow .date { font-size: 12px; color: var(--muted); }
+.hitrow .amt { font-weight: 700; color: var(--hit); font-variant-numeric: tabular-nums; }
+.hitrow .detail { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+
+/* ---------------- stats ---------------- */
+
+.statgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: 6px; }
+.statcell {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 9px;
+  padding: 7px 3px; text-align: center;
+}
+.statcell .n { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.statcell .c { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+.statcell.hot { border-color: var(--accent); background: #fffaf0; }
+.statcell.hot .n { color: var(--accent); }
+.statcell.cold { opacity: .62; }
+
+.posgrid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; margin-top: 6px; }
+.poscell { text-align: center; padding: 5px 0; border-radius: 6px; background: var(--panel-2); font-size: 11px; }
+.poscell .d { color: var(--muted); font-size: 9.5px; }
+.poscell .v { font-variant-numeric: tabular-nums; }
+/* The most-drawn digit in each position. The pale gold is light enough that the
+ * 9.5px label needs its own darker colour to clear 4.5:1. */
+.poscell.top { background: var(--accent-dim); }
+.poscell.top .d { color: #6a4a08; }
+
+/* ---------------- saved ---------------- */
+
+.saved-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.saved {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 11px; padding: 11px 12px;
+}
+.saved .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.saved .nums { font-size: 16px; font-weight: 700; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+.saved .status { font-size: 11.5px; margin-top: 5px; }
+.saved .status.hit { color: var(--hit); }
+.del {
+  background: none; border: 0; color: var(--miss); font-size: 18px;
+  cursor: pointer; padding: 0 4px; font-family: inherit;
+}
+.empty { color: var(--muted); font-size: 12.5px; text-align: center; padding: 22px 0; }
+
+/* ---------------- tabs ---------------- */
+
+#tabbar {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  background: var(--bg); border-top: 1px solid var(--line);
+  flex: 0 0 auto; padding-bottom: env(safe-area-inset-bottom);
+}
+.tab {
+  background: none; border: 0; color: var(--muted); font-size: 10px;
+  font-family: inherit; padding: 8px 0 9px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer;
+}
+.tab span { font-size: 17px; line-height: 1; }
+.tab.active { color: var(--accent); }
+
+/* ---------------- overlay ---------------- */
+
+.overlay {
+  position: fixed; inset: 0; background: rgba(26, 22, 17, .5);
+  display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50;
+}
+.ovcard {
+  background: var(--bg); border: 1px solid var(--line);
+  box-shadow: 0 8px 28px rgba(26, 22, 17, .18);
+  border-radius: 18px; padding: 20px; max-width: 380px; width: 100%;
+}
+.ovcard h1 { font-size: 18px; margin: 0 0 10px; }
+.ovcard p { font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0 0 10px; }
+.howlist { margin: 0 0 14px; padding-left: 18px; }
+.howlist li { font-size: 12.5px; color: var(--muted); line-height: 1.6; }

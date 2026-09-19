@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>SG 4D — Results &amp; Checker</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ HEADER ============ -->
+  <header id="topbar">
+    <div class="brand">
+      <span class="brand-mark">🎲</span>
+      <div>
+        <div class="brand-name">SG 4D</div>
+        <div id="status-line" class="status">Loading results…</div>
+      </div>
+    </div>
+    <button id="refresh-btn" class="iconbtn" title="Refresh results" aria-label="Refresh results">⟳</button>
+  </header>
+
+  <main id="views">
+
+    <!-- ===================== RESULTS ===================== -->
+    <section id="view-results" class="view active">
+      <div id="next-draw" class="nextdraw"></div>
+
+      <div class="draw-picker">
+        <label for="draw-select" class="muted-sm">Draw</label>
+        <select id="draw-select" class="select"></select>
+      </div>
+
+      <div id="result-card"></div>
+
+      <div class="section-head">
+        <h2>Recent draws</h2>
+        <span id="recent-sub" class="muted-sm"></span>
+      </div>
+      <div id="recent-list" class="recent-list"></div>
+
+      <p class="fineprint" id="source-note"></p>
+    </section>
+
+    <!-- ===================== CHECK ===================== -->
+    <section id="view-check" class="view">
+      <div class="field">
+        <label for="fourd-entry">Your number</label>
+        <input id="fourd-entry" class="input big-num" inputmode="numeric"
+               maxlength="4" placeholder="1234" autocomplete="off">
+        <p class="hint hidden" id="fourd-entry-hint">Use R for the rolling digit on a 4D Roll, e.g. 58R2.</p>
+      </div>
+
+      <div class="field">
+        <label>Entry type</label>
+        <div class="chip-row" id="fourd-type">
+          <button class="chip selected" data-type="ordinary">Ordinary</button>
+          <button class="chip" data-type="ibet">iBet</button>
+          <button class="chip" data-type="system">System</button>
+          <button class="chip" data-type="roll">4D Roll</button>
+        </div>
+      </div>
+
+      <div class="field two-up">
+        <div>
+          <label>Big or Small</label>
+          <div class="chip-row" id="fourd-size">
+            <button class="chip selected" data-size="big">Big</button>
+            <button class="chip" data-size="small">Small</button>
+          </div>
+        </div>
+        <div>
+          <label for="fourd-stake">Stake per number</label>
+          <select id="fourd-stake" class="select">
+            <option value="1">$1</option>
+            <option value="2">$2</option>
+            <option value="5">$5</option>
+            <option value="10">$10</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="fourd-entry-note" class="entrynote"></div>
+      <button id="fourd-check-btn" class="btn primary big">Check last 30 draws</button>
+      <div id="fourd-check-out" class="checkout"></div>
+    </section>
+
+    <!-- ===================== STATS ===================== -->
+    <section id="view-stats" class="view">
+      <div class="chip-row" id="stats-window">
+        <button class="chip" data-window="30">30</button>
+        <button class="chip selected" data-window="100">100</button>
+        <button class="chip" data-window="0">All</button>
+        <span class="chip-label">draws</span>
+      </div>
+
+      <p class="notice">Draws are independent. A number that has not appeared for a long
+         time is exactly as likely tonight as any other. These are a record of what
+         happened, not a forecast.</p>
+
+      <div id="stats-body"></div>
+    </section>
+
+    <!-- ===================== SAVED ===================== -->
+    <section id="view-saved" class="view">
+      <div class="section-head"><h2>Saved numbers</h2></div>
+      <p class="muted-sm">Checked against every draw in the app, newest first.</p>
+
+      <div class="field">
+        <label for="save-fourd">Add a number</label>
+        <div class="btn-row tight">
+          <input id="save-fourd" class="input" inputmode="numeric" maxlength="4" placeholder="1234" autocomplete="off">
+          <button id="save-fourd-btn" class="btn">Add</button>
+        </div>
+      </div>
+
+      <div id="saved-list" class="saved-list"></div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section id="view-about" class="view">
+      <div class="section-head"><h2>About</h2></div>
+
+      <div class="card">
+        <h3>Not affiliated with Singapore Pools</h3>
+        <p>This app is an independent results viewer. It is not operated by,
+           endorsed by, or connected to Singapore Pools or the Singapore
+           Totalisator Board. You cannot place a bet here, and this app does not
+           handle money.</p>
+      </div>
+
+      <div class="card">
+        <h3>Where the results come from</h3>
+        <p id="about-source">Results are read from Singapore Pools' published 4D
+           draw pages. Official results are whatever Singapore Pools publishes —
+           if this app and their site ever disagree, their site is right.</p>
+        <p class="fineprint" id="about-feed"></p>
+        <button id="about-refresh" class="btn">Refresh now</button>
+      </div>
+
+      <div class="card">
+        <h3>About the prize figures</h3>
+        <p>4D prizes are fixed amounts per $1 stake, taken from Singapore Pools'
+           published 4D Game Rules, so the checker works them out exactly rather
+           than estimating.</p>
+        <p>iBet is not the fixed prize divided by the number of permutations —
+           it has its own rate for each digit pattern, and the checker uses those
+           published rates.</p>
+      </div>
+
+      <div class="card warn-card">
+        <h3>If gambling stops being fun</h3>
+        <p>Set your own limits and stick to them. Help is available in Singapore
+           from the National Problem Gambling Helpline on <b>1800-6-668-668</b>.</p>
+      </div>
+
+      <p class="fineprint">SG 4D v1.0 · <span id="build-note"></span></p>
+    </section>
+
+  </main>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <nav id="tabbar">
+    <button class="tab active" data-view="results"><span>🏆</span>Results</button>
+    <button class="tab" data-view="check"><span>✓</span>Check</button>
+    <button class="tab" data-view="stats"><span>📊</span>Stats</button>
+    <button class="tab" data-view="saved"><span>★</span>Saved</button>
+    <button class="tab" data-view="about"><span>ⓘ</span>About</button>
+  </nav>
+
+  <!-- ============ FIRST-RUN NOTICE ============ -->
+  <div id="disclaimer" class="overlay hidden">
+    <div class="ovcard">
+      <h1>Before you start</h1>
+      <p><b>This is a results app, not a betting app.</b> It shows published 4D
+         results and checks numbers against them.</p>
+      <ul class="howlist">
+        <li>Not affiliated with or endorsed by Singapore Pools.</li>
+        <li>You cannot place a bet here. No money changes hands.</li>
+        <li>Official results are whatever Singapore Pools publishes.</li>
+        <li>Statistics describe past draws. They predict nothing.</li>
+        <li>Help: National Problem Gambling Helpline 1800-6-668-668.</li>
+      </ul>
+      <button id="disclaimer-ok" class="btn primary big">I understand</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="ads.js"></script>
+<script src="data.js"></script>
+<script src="checker.js"></script>
+<script src="stats.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

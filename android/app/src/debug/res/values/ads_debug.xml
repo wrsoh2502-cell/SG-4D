@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DEBUG-ONLY consent testing.
+
+  A non-empty hash here makes ConsentGate force DEBUG_GEOGRAPHY_EEA and reset
+  stored consent on every launch, so the GDPR form can be exercised from
+  anywhere. This file lives in src/debug/, so it is compiled into debug builds
+  only - main/res/values/ads.xml keeps the value empty and a release build can
+  never carry it. Shipping it would show the consent form worldwide.
+
+  Get the hash for a new device from logcat on first run:
+    UserMessagingPlatform: Use new ConsentDebugSettings.Builder()
+        .addTestDeviceHashedId("...") to set this as a debug device.
+
+  Clear the value to test the normal, region-detected path on this device.
+-->
+<resources>
+    <string name="admob_test_device_hash" translatable="false">B3EEABB8EE11C2BE770B684D95219ECB</string>
+</resources>
