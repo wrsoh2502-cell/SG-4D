@@ -39,7 +39,7 @@ window.SGData = (function () {
    * If it 404s or goes away, nothing breaks loudly: the fetch below is caught,
    * the app keeps serving the bundled seed, and the native fallback fills the
    * gap inside the APK. */
-  var FEED_URL = 'https://wrsoh2502-cell.github.io/sg-4d-results/data/history.json';
+  var FEED_URL = 'https://wrsoh2502-cell.github.io/SG-4D/data/history.json';
 
   var SEED_URL = './data/history.json';
   var CACHE_KEY = 'sg4d.history.v1';
