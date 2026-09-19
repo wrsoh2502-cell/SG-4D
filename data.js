@@ -116,6 +116,11 @@ window.SGData = (function () {
     return out;
   }
 
+  /* Least to most authoritative. state.source reports the best source we
+   * actually managed to read, which is not the same as the one that happened
+   * to add a row. */
+  var SOURCE_RANK = { cache: 0, seed: 1, feed: 2, live: 3 };
+
   function absorb(payload, source) {
     if (!payload) return false;
     var before = state.draws.length;
@@ -123,9 +128,12 @@ window.SGData = (function () {
     if (payload.generated && (!state.generated || payload.generated > state.generated)) {
       state.generated = payload.generated;
     }
-    var grew = state.draws.length > before;
-    if (grew) state.source = source;
-    return grew;
+    // Recorded on a successful read, NOT on whether it grew the history. The
+    // steady state for a healthy feed is that it adds nothing — every draw it
+    // carries is already in the bundled seed — and reporting "seed" then would
+    // tell the user we had failed to reach the network when we had not.
+    if (SOURCE_RANK[source] >= SOURCE_RANK[state.source]) state.source = source;
+    return state.draws.length > before;
   }
 
   function readCache() {
@@ -310,6 +318,10 @@ window.SGData = (function () {
   function load(opts) {
     opts = opts || {};
     state.error = null;
+    // Reset so source describes THIS load. Without it a refresh that failed to
+    // reach the feed would keep reporting the source of an earlier successful
+    // one, and the header would claim "up to date" off the back of it.
+    state.source = 'cache';
 
     var cached = readCache();
     if (cached) absorb(cached, 'cache');
