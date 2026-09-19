@@ -85,15 +85,25 @@ python tools/scrape.py --backfill 250 --out data/history.json
 
 Takes a few minutes — it sleeps 0.4s between requests, deliberately.
 
-### Publishing the feed — the one step still outstanding
+### The published feed
 
-1. Push this directory to a GitHub repo.
-2. Enable Actions. `.github/workflows/scrape.yml` is already written and runs
-   at 20:00 and 23:00 SGT on Wednesdays, Saturdays and Sundays.
-3. Serve `data/history.json` over HTTPS (GitHub Pages, or raw.githubusercontent).
-4. Set `FEED_URL` at the top of `data.js` to that URL.
+- **Repo**: <https://github.com/wrsoh2502-cell/sg-4d-results> (public — GitHub
+  Pages needs it to be, and the app has to be able to read the feed anonymously)
+- **Feed**: <https://wrsoh2502-cell.github.io/sg-4d-results/data/history.json>
+- **Web version of the app**: <https://wrsoh2502-cell.github.io/sg-4d-results/>
 
-Until step 4, the app runs on the bundled seed plus the native fallback below.
+Pages serves the repo root, so the same deploy publishes both the JSON the app
+reads and a working browser version of the app. `FEED_URL` at the top of
+`data.js` points at the first of those.
+
+GitHub Pages sends `Access-Control-Allow-Origin: *`, which is the entire reason
+this indirection exists — Singapore Pools does not, so the WebView cannot read
+them directly.
+
+Two things deliberately kept out of the public repo (see `.gitignore`):
+`PLAY_STORE_LISTING.md`, which is internal ASO strategy and a candid
+Play-policy risk assessment of this app, and `store-assets/`, which goes to
+Play Console rather than a public URL.
 
 ### The native fallback
 
